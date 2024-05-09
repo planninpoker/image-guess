@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String            @id @default(uuid())
+  name           String
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  score          RoundSubmission[]
+  challengeScore ChallengeScore[]
+}
+
+model Challenge {
+  id          String @id @default(uuid())
+  name        String
+  description String
+
+  date           DateTime
+  rounds         Round[]
+  challengeScore ChallengeScore[]
+}
+
+model ChallengeScore {
+  id    String @id @default(uuid())
+  score Int
+
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  challengeId String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+
+  @@index([challengeId, score])
+}
+
+model Round {
+  id          String            @id @default(uuid())
+  date        DateTime
+  imageId     String
+  score       RoundSubmission[]
+  challenge   Challenge?        @relation(fields: [challengeId], references: [id])
+  challengeId String?
+
+  @@index([date, imageId])
+}
+
+model RoundSubmission {
+  id         String    @id @default(uuid())
+  startedAt  DateTime
+  finishedAt DateTime?
+  skipped    Boolean
+
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  round   Round  @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  roundId String
+
+  @@index([userId, roundId])
+}
