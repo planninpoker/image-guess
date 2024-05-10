@@ -10,14 +10,18 @@ export const GET = async (request: NextRequest) => {
         const params = request.nextUrl.searchParams;
         const imageId = params.get("imageId");
 
+        console.log("imageId ", imageId)
         if (!imageId) {
+            console.log("Image ID not found")
             return NextResponse.json({Message: "Image ID not found", status: 400});
         }
 
         const blobStore = store();
         const image = await blobStore.get(imageId, {consistency: "strong", type: "blob"});
+        console.log("found image")
 
         if (!image) {
+            console.log("Image not found")
             return NextResponse.json({Message: "Image not found", status: 404});
         }
 
