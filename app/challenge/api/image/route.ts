@@ -2,7 +2,11 @@ import {NextRequest, NextResponse} from "next/server";
 import {cookies} from "next/headers";
 import {sessionOptions} from "gmaker/src/auth/iron-session/iron-options";
 import {getAppSession} from "gmaker/src/auth/iron-session/iron-session";
-import {store} from "gmaker/app/images/route";
+import {getStore} from "@netlify/blobs";
+
+const store = () => {
+    return getStore({name: 'images', consistency: 'strong'});
+}
 
 export const GET = async (request: NextRequest) => {
     const session = await getAppSession(cookies(), sessionOptions);

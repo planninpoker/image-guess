@@ -2,7 +2,7 @@ import {getStore} from '@netlify/blobs';
 import {getUUID} from "gmaker/src/helpers/strings";
 import {NextResponse} from "next/server";
 
-export const store = () => {
+const store = () => {
     return getStore({name: 'images', consistency: 'strong'});
 }
 
