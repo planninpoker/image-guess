@@ -15,6 +15,7 @@ import Link from "next/link";
 import {useAuthContext} from "gmaker/src/auth/auth-provider";
 import {NameCard} from "gmaker/src/pages/challenge/name-card";
 import {useSnackbar} from "notistack";
+import {ImageLoaderProps} from "next/dist/shared/lib/image-config";
 
 const useChallenge = () => {
     return useQuery({
@@ -24,6 +25,14 @@ const useChallenge = () => {
             return resp.data;
         }
     });
+}
+
+const customLoader = ({
+                          src,
+                          width,
+                          quality,
+                      }:ImageLoaderProps) => {
+    return `https://image-guess.netlify.app/.netlify/images?url=${src}&w=${width}&q=${quality}`
 }
 
 const Challenge = () => {
@@ -181,6 +190,7 @@ const Challenge = () => {
             </form>
             <Image
                 src={process.env.NODE_ENV === "production" ? `https://image-guess.netlify.app/challenge/api/image?imageId=${currentRound.imageId}` : `/challenge/api/image?imageId=${currentRound.imageId}`}
+                loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
                 alt={"image"}
                 width={10 * (attempt) || 1}
                 height={10 * attempt || 1}
