@@ -1,17 +1,14 @@
-import {getIronSession, IronSession, IronSessionData} from "iron-session";
+import {getIronSession, IronSession, IronSessionData, SessionOptions} from "iron-session";
 import type {NextApiRequest, NextApiResponse} from "next";
 
 import {sessionOptions} from "./iron-options";
 import {NextApiHandler} from "next/dist/shared/lib/utils";
-
-export type AuthUser = {
-    id: string;
-    name: string;
-}
+import {ReadonlyRequestCookies} from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import {User} from "@prisma/client";
 
 declare module "iron-session" {
     interface IronSessionData {
-        user?: AuthUser;
+        user?: User;
     }
 }
 
@@ -22,6 +19,10 @@ declare module "next" {
 }
 
 export const MISSING_SESSION = "MISSING_SESSION";
+
+export const getAppSession = async (cookies: ReadonlyRequestCookies, sessionOptions: SessionOptions) => {
+    return getIronSession<IronSessionData>(cookies, sessionOptions);
+};
 
 const getSession = async (req: NextApiRequest, res: NextApiResponse) => {
     return getIronSession<IronSessionData>(req, res, sessionOptions);

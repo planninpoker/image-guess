@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  id             String            @id @default(uuid())
-  name           String
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
-  score          RoundSubmission[]
-  challengeScore ChallengeScore[]
+  id                        String                     @id @default(uuid())
+  name                      String
+  admin                     Boolean                    @default(false)
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+  challengeRoundSubmissions ChallengeRoundSubmission[]
+  challengeScore            ChallengeScore[]
 }
 
 model Challenge {
@@ -21,9 +22,33 @@ model Challenge {
   name        String
   description String
 
-  date           DateTime
-  rounds         Round[]
-  challengeScore ChallengeScore[]
+  date   DateTime
+  rounds ChallengeRound[]
+  scores ChallengeScore[]
+}
+
+model ChallengeRound {
+  id          String                     @id @default(uuid())
+  name        String                     @default("")
+  imageId     String
+  submissions ChallengeRoundSubmission[]
+  challenge   Challenge                  @relation(fields: [challengeId], references: [id])
+  challengeId String
+}
+
+model ChallengeRoundSubmission {
+  id         String    @id @default(uuid())
+  startedAt  DateTime
+  finishedAt DateTime?
+  attempts   Int
+  completed  Boolean
+
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String
+  challengeRound   ChallengeRound @relation(fields: [challengeRoundId], references: [id], onDelete: Cascade)
+  challengeRoundId String
+
+  @@unique([userId, challengeRoundId])
 }
 
 model ChallengeScore {
@@ -35,30 +60,6 @@ model ChallengeScore {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 
+  @@unique([userId, challengeId])
   @@index([challengeId, score])
-}
-
-model Round {
-  id          String            @id @default(uuid())
-  date        DateTime
-  imageId     String
-  score       RoundSubmission[]
-  challenge   Challenge?        @relation(fields: [challengeId], references: [id])
-  challengeId String?
-
-  @@index([date, imageId])
-}
-
-model RoundSubmission {
-  id         String    @id @default(uuid())
-  startedAt  DateTime
-  finishedAt DateTime?
-  skipped    Boolean
-
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String
-  round   Round  @relation(fields: [roundId], references: [id], onDelete: Cascade)
-  roundId String
-
-  @@index([userId, roundId])
 }

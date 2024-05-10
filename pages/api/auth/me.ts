@@ -1,17 +1,21 @@
 import type {NextApiRequest, NextApiResponse} from "next";
-import {AuthUser, withIronSessionApiRoute} from "gmaker/src/auth/iron-session/iron-session";
+import { withIronSessionApiRoute} from "gmaker/src/auth/iron-session/iron-session";
 import {getUUID} from "gmaker/src/helpers/strings";
+import prisma from "gmaker/lib/prisma";
+import {User} from "@prisma/client";
 
-const generateUser = (): AuthUser => {
-    return {id: getUUID(), name: "Anonymous"}
-}
 
 const handler = async (
     req: NextApiRequest,
-    res: NextApiResponse<AuthUser>,
+    res: NextApiResponse<User>,
 ) => {
     if (!req.session.user) {
-        req.session.user = generateUser()
+        req.session.user = await prisma.user.create({
+            data: {
+                id: getUUID(),
+                name: ""
+            }
+        })
         await req.session.save()
     }
     res.status(200).json(req.session.user)
