@@ -156,7 +156,7 @@ export const POST = async (request: Request) => {
                 })
             }
             // user is done with all rounds
-            if (currentRoundIndex === 4) {
+            if (currentRoundIndex === 9) {
                 const submissions = await prisma.challengeRoundSubmission.findMany({
                     where: {
                         userId: session.user.id,

@@ -1,5 +1,4 @@
 import {getStore} from '@netlify/blobs';
-import {getUUID} from "gmaker/src/helpers/strings";
 import {NextResponse} from "next/server";
 
 const store = () => {
@@ -10,14 +9,17 @@ export const POST = async (request: Request) => {
     const formData = await request.formData();
 
     const file = formData.get("file");
+    const name = formData.get("name");
     if (!file) {
         return NextResponse.json({error: "No files received."}, {status: 400});
     }
+    if (!name || typeof name !== "string") {
+        return NextResponse.json({error: "No name received."}, {status: 400});
+    }
 
     try {
-        const id = getUUID();
         const blobStore = store();
-        await blobStore.set(`${id}.webp`, file);
+        await blobStore.set(name, file);
         return NextResponse.json({Message: "Success", status: 201});
     } catch (error) {
         console.log("Error occured ", error);

@@ -32,7 +32,7 @@ model ChallengeRound {
   name        String                     @default("")
   imageId     String
   submissions ChallengeRoundSubmission[]
-  challenge   Challenge                  @relation(fields: [challengeId], references: [id])
+  challenge   Challenge                  @relation(fields: [challengeId], references: [id], onDelete: Cascade)
   challengeId String
 }
 

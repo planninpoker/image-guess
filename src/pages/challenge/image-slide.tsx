@@ -33,7 +33,6 @@ export const ImageSlide = () => {
                 borderBottomRightRadius: "12px",
             }}>
                 <Typography variant={"h6"} component={"p"} fontWeight={600}>The game is simple.</Typography>
-                <Typography variant={"body1"}>
                     <ol style={{
                         paddingInlineStart: "20px",
                     }}>
@@ -43,7 +42,6 @@ export const ImageSlide = () => {
                         <li>Lose points for guessing wrong. Earn points for speed.</li>
                         <li>New images daily.</li>
                     </ol>
-                </Typography>
             </Stack>
             <Image
                 src={`/challenge/api/image?imageId=4a60fb22-8ff8-401b-8a98-0ce8281b0ce1.webp`}

@@ -5,7 +5,10 @@ export type CreateChallengeRequest = {
     name: string;
     description: string;
     date: Date;
-    imageIds: string[];
+    images: {
+        id: string;
+        name: string;
+    }[]
 }
 
 export const POST = async (request: Request) => {
@@ -22,10 +25,11 @@ export const POST = async (request: Request) => {
             }
         })
         await prisma.$transaction([
-            ...body.imageIds.map((imageId) => prisma.challengeRound.create({
+            ...body.images.map((imageId) => prisma.challengeRound.create({
                 data: {
                     challengeId: challenge.id,
-                    imageId: imageId
+                    imageId: `${imageId.id}.webp`,
+                    name: imageId.name.toLowerCase(),
                 }
             }))
         ])

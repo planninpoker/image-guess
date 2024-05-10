@@ -130,7 +130,7 @@ const Challenge = () => {
         </Button>
     }
 
-    if (round === 5) {
+    if (round === 10) {
         return <CompletedCard score={score}/>
     }
 

@@ -26,7 +26,7 @@ export const CompletedCard = ({score}: {
                     </Typography>
                 </Stack>
             </Card>
-            <Link href={"/"}>
+            <Link href={"/#leaderboard"}>
                 <Typography
                     sx={{
                         pt:2,

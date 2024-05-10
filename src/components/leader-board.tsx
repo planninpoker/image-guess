@@ -8,7 +8,7 @@ type LeaderBoardProps = {
 export const LeaderBoard = ({data}: LeaderBoardProps) => {
     const {user} = useAuthContext()
     return (
-        <Box>
+        <Box id={"leaderboard"}>
             <Typography variant={"h4"} pb={2} textAlign={"center"}>
                 Today&apos;s Leaderboard
             </Typography>

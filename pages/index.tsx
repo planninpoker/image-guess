@@ -40,7 +40,7 @@ export default function Home() {
                     <Button
                         sx={{
                             px: 8,
-                            py: 2,
+                            py: 1,
 
                         }}
                         size={"large"}
