@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && && prisma db push && next build",
+    "build": "prisma generate && prisma db push && next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:publish": "prisma generate",
+    "prisma:publish": "prisma generate && prisma db push",
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
