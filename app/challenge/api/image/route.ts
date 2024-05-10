@@ -1,7 +1,4 @@
 import {NextRequest, NextResponse} from "next/server";
-import {cookies} from "next/headers";
-import {sessionOptions} from "gmaker/src/auth/iron-session/iron-options";
-import {getAppSession} from "gmaker/src/auth/iron-session/iron-session";
 import {getStore} from "@netlify/blobs";
 
 const store = () => {
@@ -9,10 +6,6 @@ const store = () => {
 }
 
 export const GET = async (request: NextRequest) => {
-    const session = await getAppSession(cookies(), sessionOptions);
-    if (!session?.user) {
-        return NextResponse.json({Message: "Unauthorized", status: 401});
-    }
     try {
         const params = request.nextUrl.searchParams;
         const imageId = params.get("imageId");
