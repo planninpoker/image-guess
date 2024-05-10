@@ -27,14 +27,15 @@ const useChallenge = () => {
     });
 }
 
+
 const customLoader = ({
                           src,
                           width,
                           quality,
                       }:ImageLoaderProps) => {
-    return `https://image-guess.netlify.app/.netlify/images?url=${src}&w=${width}&q=${quality}`
+    const encodedSrc = encodeURIComponent(src);
+    return `https://image-guess.netlify.app/.netlify/images?url=${encodedSrc}&w=${width}&q=${quality}`;
 }
-
 const Challenge = () => {
     const {user} = useAuthContext()
     const [score, setScore] = useState(0)
