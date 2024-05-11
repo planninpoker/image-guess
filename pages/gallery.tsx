@@ -4,6 +4,7 @@ import {ChallengeWithRounds} from "gmaker/app/challenge/api/gallery/route";
 import {useState} from "react";
 import {Box, Card, Slider, Stack, Typography} from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 
 const useChallenge = () => {
     return useQuery({
@@ -98,32 +99,49 @@ const ImageComponent = ({imageId, name}:ImageComponentProps) => {
 const Gallery = () => {
     const {data} = useChallenge();
 
-    return <Stack spacing={4}
-                  sx={{
-                      mx: "auto",
-                  }}
-                  py={{
-                      xs: 2,
-                      sm: 4,
-                  }}>
+    return (
         <Stack>
-            <Typography variant={"h2"} component={'h1'}>
-                Previous Images Gallery
-            </Typography>
-            <Typography variant={"body1"}>
-                All of the images from past challenges. Think you can guess them all?
-            </Typography>
+            <Link href={"/"} style={{
+                textDecoration: "none",
+            }}>
+                <Typography
+                    sx={{
+                        pt:2,
+                        color: "primary.light",
+                        cursor: "pointer",
+                        textDecoration: "none",
+                    }}>
+                    Go back
+                </Typography>
+            </Link>
+            <Stack spacing={4}
+                   sx={{
+                       mx: "auto",
+                   }}
+                   py={{
+                       xs: 2,
+                       sm: 4,
+                   }}>
+                <Stack>
+                    <Typography variant={"h2"} component={'h1'}>
+                        Previous Images Gallery
+                    </Typography>
+                    <Typography variant={"body1"}>
+                        All of the images from past challenges. Think you can guess them all?
+                    </Typography>
+                </Stack>
+                <Stack direction={"row"} flexWrap={"wrap"} gap={2}>
+                    {data?.rounds.map((round, index) => (
+                        <ImageComponent
+                            key={round.id}
+                            imageId={round.imageId}
+                            name={round.name}
+                        />
+                    ))}
+                </Stack>
+            </Stack>
         </Stack>
-        <Stack direction={"row"} flexWrap={"wrap"} gap={2}>
-            {data?.rounds.map((round, index) => (
-                <ImageComponent
-                    key={round.id}
-                    imageId={round.imageId}
-                    name={round.name}
-                />
-            ))}
-        </Stack>
-    </Stack>
+    )
 }
 
 export default Gallery

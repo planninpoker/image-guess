@@ -1,4 +1,4 @@
-import {Alert, Box, Button, Stack, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, CircularProgress, Stack, TextField, Typography} from "@mui/material";
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
@@ -14,7 +14,6 @@ import {CompletedCard} from "gmaker/src/pages/challenge/completed-card";
 import Link from "next/link";
 import {useAuthContext} from "gmaker/src/auth/auth-provider";
 import {NameCard} from "gmaker/src/pages/challenge/name-card";
-import {useSnackbar} from "notistack";
 import {ImageLoaderProps} from "next/dist/shared/lib/image-config";
 import {RoomParticles} from "gmaker/src/components/particles/room-particles";
 
@@ -28,6 +27,25 @@ const useChallenge = () => {
     });
 }
 
+const FullPageLoader = () => {
+
+    return (
+        <Stack
+            spacing={2}
+            sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "80vh",
+            }}>
+            <CircularProgress size={100} thickness={10}/>
+            <Typography>
+                Loading...
+            </Typography>
+        </Stack>
+    )
+}
+
 
 const customLoader = ({
                           src,
@@ -38,7 +56,6 @@ const customLoader = ({
     return `https://image-guess.netlify.app/.netlify/images?url=${encodedSrc}&w=${width}&q=${quality}`;
 }
 const Challenge = () => {
-    const {user} = useAuthContext()
     const [score, setScore] = useState(0)
 
     const [loading, setLoading] = useState(false)
@@ -59,17 +76,15 @@ const Challenge = () => {
         setGreenFlash(true)
         setTimeout(() => {
             setGreenFlash(false)
-        }, 2000)
+        }, 300)
     }
 
     const failed = () => {
         setRedFlash(true)
         setTimeout(() => {
             setRedFlash(false)
-        }, 2000)
+        }, 300)
     }
-
-    const {enqueueSnackbar} = useSnackbar()
 
     useEffect(() => {
         const roundsWithUserSubmission = (data?.rounds ?? []).filter(
@@ -140,20 +155,14 @@ const Challenge = () => {
         setLoading(false)
     }
 
-    if (isLoading || !user || !data) {
-        return <Stack>
-            Loading...
-        </Stack>
-    }
+    useEffect(() => {
+        if (!started && round === 0 && !((isLoading || !data))) {
+            startChallenge()
+        }
+    }, [data, isLoading, round, startChallenge, started]);
 
-    if (!user.name) {
-        return <NameCard/>
-    }
-
-    if (!started && round === 0) {
-        return <Button onClick={startChallenge}>
-            Start Challenge
-        </Button>
+    if (isLoading || !data) {
+        return <FullPageLoader/>
     }
 
     if (round === 10) {
@@ -213,32 +222,34 @@ const Challenge = () => {
                     }}
                 />
                 <Alert
+                    icon={false}
                     severity="error"
                     variant={"filled"}
                     sx={{
                         opacity: redFlash ? 1 : 0,
-                        transition: "opacity 100ms ease-out",
+                        transition: "opacity 300ms ease-out",
                         position: "absolute",
                         bottom: 0,
+                        top:0,
                         left: 0,
-                        right:0,
+                        right: 0,
                     }}
                 >
-                    Incorrect!
                 </Alert>
                 <Alert
+                    icon={false}
                     severity="success"
                     variant={"filled"}
                     sx={{
                         opacity: greenFlash ? 1 : 0,
-                        transition: "opacity 100ms ease-out",
+                        transition: "opacity 300ms ease-out",
                         position: "absolute",
                         bottom: 0,
+                        top:0,
                         left: 0,
-                        right:0,
+                        right: 0,
                     }}
                 >
-                    Correct!
                 </Alert>
                 <Box sx={{
                     position: "absolute",
@@ -298,4 +309,18 @@ const Challenge = () => {
     </Stack>
 }
 
-export default Challenge;
+const UserLoader = () => {
+    const {user} = useAuthContext()
+
+    if (!user) {
+        return <FullPageLoader/>
+    }
+
+    if (!user.name) {
+        return <NameCard/>
+    }
+
+    return <Challenge/>
+}
+
+export default UserLoader;
