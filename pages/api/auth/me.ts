@@ -9,6 +9,8 @@ const handler = async (
     req: NextApiRequest,
     res: NextApiResponse<User>,
 ) => {
+    // no cache
+    res.setHeader("Cache-Control", "no-store")
     if (!req.session.user) {
         req.session.user = await prisma.user.create({
             data: {
