@@ -41,6 +41,6 @@ export const GET = async (request: NextRequest) => {
         });
     } catch (error) {
         console.log("Error occured ", error);
-        return NextResponse.json({Message: "Failed", status: 500});
+        return NextResponse.json({Message: "Failed for some reason", status: 500, error: error});
     }
 };
