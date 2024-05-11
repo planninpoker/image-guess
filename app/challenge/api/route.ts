@@ -104,6 +104,7 @@ export type ChallengeRoundSubmissionResponse = {
 }
 
 export const POST = async (request: Request) => {
+    console.log("POST request for challenge submission")
     const session = await getAppSession(cookies(), sessionOptions);
     if (!session?.user) {
         return NextResponse.json({Message: "Unauthorized", status: 401});
