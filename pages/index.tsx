@@ -16,7 +16,7 @@ const useChallenge = () => {
         queryKey: ["challenge", "scores"],
         refetchOnMount: true,
         queryFn: async (): Promise<ChallengeWithScores> => {
-            const resp = await axios.get<ChallengeWithScores>("/challenge/api/leaderboard");
+            const resp = await axios.post<ChallengeWithScores>("/challenge/api/leaderboard");
             return resp.data;
         }
     });

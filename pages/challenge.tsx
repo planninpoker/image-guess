@@ -21,7 +21,10 @@ const useChallenge = () => {
     return useQuery({
         queryKey: ["challenge"],
         queryFn: async (): Promise<FullUserChallenge> => {
-            const resp = await axios.get<FullUserChallenge>("/challenge/api");
+            const {signal} = new AbortController();
+            const resp = await axios.get<FullUserChallenge>("/challenge/api", {
+                signal
+            });
             return resp.data;
         }
     });
@@ -219,7 +222,7 @@ const Challenge = () => {
                         transition: "opacity 300ms ease-out",
                         position: "absolute",
                         bottom: 0,
-                        top:0,
+                        top: 0,
                         left: 0,
                         right: 0,
                     }}
@@ -234,7 +237,7 @@ const Challenge = () => {
                         transition: "opacity 300ms ease-out",
                         position: "absolute",
                         bottom: 0,
-                        top:0,
+                        top: 0,
                         left: 0,
                         right: 0,
                     }}
