@@ -32,7 +32,9 @@ export const GET = async (request: Request) => {
                 },
             }
         })
-        return NextResponse.json(challenge);
+        const response = NextResponse.json(challenge);
+        response.headers.set("Cache-Control", "no-store");
+        return response;
     } catch (e) {
         console.log(e);
         return NextResponse.json({Message: "Internal Server Error", status: 500});

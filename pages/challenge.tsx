@@ -45,7 +45,6 @@ const FullPageLoader = () => {
         </Stack>
     )
 }
-
 const Challenge = () => {
     const [score, setScore] = useState(0)
 
