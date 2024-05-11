@@ -213,7 +213,7 @@ const Challenge = () => {
                     alt={"image to be guessed"}
                     width={10 * (attempt) || 1}
                     height={10 * attempt || 1}
-                    quality={attempt * 10}
+                    quality={attempt * 5}
                     style={{
                         width: "100%",
                         height: "100%",

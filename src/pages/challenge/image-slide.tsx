@@ -31,15 +31,15 @@ export const ImageSlide = () => {
                 borderBottomLeftRadius: "12px",
                 borderBottomRightRadius: "12px",
             }}>
-                <Typography variant={"h6"} component={"p"} fontWeight={600}>The game is simple.</Typography>
+                <Typography variant={"h6"} component={"p"} pb={1} fontWeight={600}>The game is simple.</Typography>
                 <ol style={{
                     paddingInlineStart: "20px",
+                    marginBlockStart: "0",
+                    marginBlockEnd: "0",
                 }}>
-                    <li>There are 10 images.</li>
-                    <li>Guess what the object is in the image.</li>
+                    <li>Guess what the subject is in the image.</li>
                     <li>If you guess wrong, the image gets clearer.</li>
                     <li>Lose points for guessing wrong. Earn points for speed.</li>
-                    <li>New images daily.</li>
                 </ol>
             </Stack>
             <Box sx={{

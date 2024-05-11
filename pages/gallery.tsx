@@ -51,7 +51,7 @@ const ImageComponent = ({imageId, name}:ImageComponentProps) => {
                        alt={`blurry image of a ${name}`}
                        width={10 * (sliderValue) || 1}
                        height={10 * sliderValue || 1}
-                       quality={sliderValue * 10}
+                       quality={sliderValue * 5}
                        style={{
                            width: "100%",
                            height: "100%",
@@ -74,13 +74,10 @@ const ImageComponent = ({imageId, name}:ImageComponentProps) => {
                        </Typography>
                    </Box>}
                </Box>
-               <Stack pt={1}>
+               <Stack pt={1} px={2}>
                    <Typography id="image-quality-label" variant={"body2"}>Image Quality</Typography>
                    <Slider
                        value={sliderValue}
-                       sx={{
-                           mx:1,
-                       }}
                        onChange={(_, value) => setSliderValue(value as number)}
                        min={0}
                        max={10}
