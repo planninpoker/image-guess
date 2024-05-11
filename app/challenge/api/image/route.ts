@@ -20,6 +20,7 @@ export const GET = async (request: NextRequest) => {
             status: 200,
             statusText: "OK",
             headers: {
+                "Cache-Control": "public, max-age=604800, must-revalidate",
                 'Content-Type': 'image/webp',
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
