@@ -1,4 +1,4 @@
-import {NextRequest, NextResponse} from "next/server";
+import {NextResponse} from "next/server";
 import prisma from "gmaker/lib/prisma";
 import {Prisma} from "@prisma/client";
 
@@ -10,7 +10,7 @@ const challengeWithRounds = Prisma.validator<Prisma.ChallengeDefaultArgs>()({
 
 export type ChallengeWithRounds = Prisma.ChallengeGetPayload<typeof challengeWithRounds>;
 
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: Request) => {
     try {
         const startOfDay = new Date(new Date().setHours(0, 0, 0, 0));
         const challenge = await prisma.challenge.findFirst({
