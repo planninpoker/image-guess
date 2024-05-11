@@ -1,4 +1,4 @@
-import {Box, Button, Stack, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, Stack, TextField, Typography} from "@mui/material";
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
@@ -16,6 +16,7 @@ import {useAuthContext} from "gmaker/src/auth/auth-provider";
 import {NameCard} from "gmaker/src/pages/challenge/name-card";
 import {useSnackbar} from "notistack";
 import {ImageLoaderProps} from "next/dist/shared/lib/image-config";
+import {RoomParticles} from "gmaker/src/components/particles/room-particles";
 
 const useChallenge = () => {
     return useQuery({
@@ -32,7 +33,7 @@ const customLoader = ({
                           src,
                           width,
                           quality,
-                      }:ImageLoaderProps) => {
+                      }: ImageLoaderProps) => {
     const encodedSrc = encodeURIComponent(src);
     return `https://image-guess.netlify.app/.netlify/images?url=${encodedSrc}&w=${width}&q=${quality}`;
 }
@@ -48,6 +49,25 @@ const Challenge = () => {
     const [round, setRound] = useState(0);
     const [attempt, setAttempt] = useState(0);
     const [startedAt, setStartedAt] = useState<Date | undefined>(undefined);
+
+    const [emitIds, setEmitIds] = useState<string[]>([])
+
+    const [redFlash, setRedFlash] = useState<boolean>(false)
+    const [greenFlash, setGreenFlash] = useState<boolean>(false)
+
+    const success = () => {
+        setGreenFlash(true)
+        setTimeout(() => {
+            setGreenFlash(false)
+        }, 2000)
+    }
+
+    const failed = () => {
+        setRedFlash(true)
+        setTimeout(() => {
+            setRedFlash(false)
+        }, 2000)
+    }
 
     const {enqueueSnackbar} = useSnackbar()
 
@@ -106,14 +126,11 @@ const Challenge = () => {
                 setScore(resp.data.score ?? 0)
             }
             if (resp.data.correct) {
-                enqueueSnackbar("Correct!", {
-                    variant: "success"
-                })
+                success();
+                setEmitIds((prev) => [...prev, data?.rounds[round].imageId ?? ""])
                 nextRound();
             } else {
-                enqueueSnackbar("Incorrect", {
-                    variant: "error"
-                })
+                failed()
                 setAttempt(attempt + 1)
                 setValue("")
             }
@@ -146,7 +163,6 @@ const Challenge = () => {
     const currentRound = data.rounds[round];
 
     return <Stack
-        key={currentRound.id + attempt}
         spacing={4}
         sx={{
             maxWidth: "600px",
@@ -156,6 +172,7 @@ const Challenge = () => {
             xs: 2,
             sm: 4,
         }}>
+        <RoomParticles ids={emitIds}/>
         <Stack>
             <Typography variant={"h2"} component={'h1'}>
                 {data.name}
@@ -164,18 +181,22 @@ const Challenge = () => {
                 {data.description}
             </Typography>
         </Stack>
-        <Stack spacing={1}>
-            <Box sx={{
-                position: "relative",
-                maxWidth: "1000px",
-                width: "100%",
-                maxHeight: "1000px",
-                height: "100%",
-                aspectRatio: "1/1",
-                borderRadius: "12px",
-                overflow: "hidden",
-                backgroundColor: "rgba(0, 0, 0, 0.8)",
-            }}>
+        <Stack spacing={1} sx={{
+            zIndex: 1,
+        }}>
+            <Box
+                id={"image-container"}
+                sx={{
+                    position: "relative",
+                    maxWidth: "1000px",
+                    width: "100%",
+                    maxHeight: "1000px",
+                    height: "100%",
+                    aspectRatio: "1/1",
+                    borderRadius: "12px",
+                    overflow: "hidden",
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                }}>
                 <Image
                     src={process.env.NODE_ENV === "production" ? `https://image-guess.netlify.app/challenge/api/image?imageId=${currentRound.imageId}` : `/challenge/api/image?imageId=${currentRound.imageId}`}
                     loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
@@ -191,23 +212,51 @@ const Challenge = () => {
                         objectFit: "contain",
                     }}
                 />
+                <Alert
+                    severity="error"
+                    variant={"filled"}
+                    sx={{
+                        opacity: redFlash ? 1 : 0,
+                        transition: "opacity 100ms ease-out",
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right:0,
+                    }}
+                >
+                    Incorrect!
+                </Alert>
+                <Alert
+                    severity="success"
+                    variant={"filled"}
+                    sx={{
+                        opacity: greenFlash ? 1 : 0,
+                        transition: "opacity 100ms ease-out",
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right:0,
+                    }}
+                >
+                    Correct!
+                </Alert>
                 <Box sx={{
                     position: "absolute",
                     bottom: 0,
                     right: 0,
                     p: 1,
-                    px:2,
+                    px: 2,
                     background: "rgba(0, 0, 0, 0.6)",
                     borderTopLeftRadius: "12px",
                     borderBottomRightRadius: "12px",
                 }}>
                     <Typography>
-                        Image: {round + 1} - Attempt: {attempt + 1}/10
+                        Image: {round + 1}
                     </Typography>
                 </Box>
             </Box>
             <form
-                key={currentRound.id}
+                key={currentRound.id + attempt}
                 style={{width: "100%"}}
                 onSubmit={(e) => {
                     e.preventDefault();
