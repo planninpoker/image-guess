@@ -25,12 +25,15 @@ export const GET = async (request: NextRequest) => {
             return NextResponse.json({Message: "Image not found", status: 404});
         }
 
-        const headers = new Headers();
-        headers.set("Content-Type", "image/webp");
         return new NextResponse(image, {
             status: 200,
             statusText: "OK",
-            headers,
+            headers: {
+                'Content-Type': 'image/webp',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            },
         });
     } catch (error) {
         console.log("Error occured ", error);
