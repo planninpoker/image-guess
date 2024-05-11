@@ -190,7 +190,7 @@ const Challenge = () => {
             </form>
             <Image
                 src={process.env.NODE_ENV === "production" ? `https://image-guess.netlify.app/challenge/api/image?imageId=${currentRound.imageId}` : `/challenge/api/image?imageId=${currentRound.imageId}`}
-                //loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
+                loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
                 alt={"image to be guessed"}
                 width={10 * (attempt) || 1}
                 height={10 * attempt || 1}
