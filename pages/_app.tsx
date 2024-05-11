@@ -17,7 +17,7 @@ export default function App(props: AppProps) {
     return (
         <AppCacheProvider {...props}>
             <Head>
-                <title>Image Guess</title>
+                <title>Guess the Images</title>
                 <meta name="description" content="Image Guesser is a daily game where you guess what the image is as they load in!"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta property="og:image" content={MetaImage.src}/>
