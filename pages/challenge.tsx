@@ -46,15 +46,6 @@ const FullPageLoader = () => {
     )
 }
 
-
-const customLoader = ({
-                          src,
-                          width,
-                          quality,
-                      }: ImageLoaderProps) => {
-    const encodedSrc = encodeURIComponent(src);
-    return `https://image-guess.netlify.app/.netlify/images?url=${encodedSrc}&w=${width}&q=${quality}`;
-}
 const Challenge = () => {
     const [score, setScore] = useState(0)
 
@@ -207,8 +198,7 @@ const Challenge = () => {
                     backgroundColor: "rgba(0, 0, 0, 0.8)",
                 }}>
                 <Image
-                    src={process.env.NODE_ENV === "production" ? `https://image-guess.netlify.app/challenge/api/image?imageId=${currentRound.imageId}` : `/challenge/api/image?imageId=${currentRound.imageId}`}
-                    loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
+                    src={`/challenge/api/image?imageId=${currentRound.imageId}`}
                     loading={"eager"}
                     alt={"image to be guessed"}
                     width={10 * (attempt) || 1}
