@@ -16,7 +16,7 @@ export const GET = async (request: NextRequest) => {
         const challenge = await prisma.challenge.findFirst({
             where: {
                 date: {
-                    lte: startOfDay
+                    lt: startOfDay
                 }
             },
             include: {

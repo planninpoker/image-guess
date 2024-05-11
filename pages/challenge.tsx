@@ -202,7 +202,7 @@ const Challenge = () => {
                     borderBottomRightRadius: "12px",
                 }}>
                     <Typography>
-                        Image: {round} - Attempt: {attempt}/10
+                        Image: {round + 1} - Attempt: {attempt + 1}/10
                     </Typography>
                 </Box>
             </Box>
