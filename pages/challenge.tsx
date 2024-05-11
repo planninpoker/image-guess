@@ -179,6 +179,7 @@ const Challenge = () => {
                 <Image
                     src={process.env.NODE_ENV === "production" ? `https://image-guess.netlify.app/challenge/api/image?imageId=${currentRound.imageId}` : `/challenge/api/image?imageId=${currentRound.imageId}`}
                     loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
+                    loading={"eager"}
                     alt={"image to be guessed"}
                     width={10 * (attempt) || 1}
                     height={10 * attempt || 1}
@@ -194,13 +195,14 @@ const Challenge = () => {
                     position: "absolute",
                     bottom: 0,
                     right: 0,
-                    p: 2,
+                    p: 1,
+                    px:2,
                     background: "rgba(0, 0, 0, 0.6)",
                     borderTopLeftRadius: "12px",
                     borderBottomRightRadius: "12px",
                 }}>
                     <Typography>
-                        {attempt} / 10
+                        Image: {round} - Attempt: {attempt}/10
                     </Typography>
                 </Box>
             </Box>

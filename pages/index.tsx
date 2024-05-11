@@ -1,5 +1,6 @@
 import {Box, Button, Stack, Typography} from "@mui/material";
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
+import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
 import {useAuthContext} from "gmaker/src/auth/auth-provider";
 import {useRouter} from "next/router";
 import {useQuery} from "@tanstack/react-query";
@@ -7,6 +8,7 @@ import axios from "axios";
 import {ChallengeWithScores} from "gmaker/app/challenge/api/leaderboard/route";
 import {LeaderBoard} from "gmaker/src/components/leader-board";
 import {ImageSlide} from "gmaker/src/pages/challenge/image-slide";
+import Link from "next/link";
 
 const useChallenge = () => {
     return useQuery({
@@ -33,7 +35,10 @@ export default function Home() {
                     <Typography variant={"h1"} textAlign={"center"}>Guess the Images</Typography>
                 </Stack>
                 <ImageSlide/>
-                <Box sx={{
+                <Stack
+                direction={"row"}
+                spacing={2}
+                    sx={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -59,7 +64,22 @@ export default function Home() {
                             Play the Game
                         </Typography>
                     </Button>
-                </Box>
+                    <Link href={"/gallery"}>
+                        <Button size={"large"} variant={"contained"} color={"secondary"} sx={{
+                            py: 1,
+                        }}>
+                            <Typography variant={"h3"} component={"p"} sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                            }}>
+                                <CollectionsOutlinedIcon fontSize={"inherit"}/>
+                                Gallery
+                            </Typography>
+
+                        </Button>
+                    </Link>
+                </Stack>
             </Stack>
             {data && <LeaderBoard data={data}/>}
 
