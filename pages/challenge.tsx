@@ -102,7 +102,6 @@ const Challenge = () => {
                 challengeId: data?.id ?? ""
             }
             const resp = await axios.post<ChallengeRoundSubmissionResponse>("/challenge/api", req)
-            console.log(resp.data)
             if (resp.data.completed) {
                 setScore(resp.data.score ?? 0)
             }
