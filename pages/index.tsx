@@ -1,4 +1,5 @@
-import {Box, Button, Stack, Typography} from "@mui/material";
+import {Button, Stack, Typography} from "@mui/material";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
 import {useAuthContext} from "gmaker/src/auth/auth-provider";
@@ -32,25 +33,38 @@ export default function Home() {
         }}>
             <Stack spacing={4}>
                 <Stack>
-                    <Typography variant={"h1"} textAlign={"center"}>Guess the Images</Typography>
+                    <Typography variant={"h1"} textAlign={"center"} sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 1,
+                    }}>
+                        Guess the Images
+                    </Typography>
+
                 </Stack>
                 <ImageSlide/>
                 <Stack
-                direction={"row"}
-                spacing={2}
+                    direction={{
+                        xs: "column",
+                        sm: "row",
+                    }}
+                    spacing={2}
                     sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}>
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}>
                     <Button
                         sx={{
+                            width: {
+                                xs: "100%",
+                                sm: "auto",
+                            },
                             px: 8,
                             py: 1,
-
                         }}
                         size={"large"}
-                        fullWidth={false}
                         variant={"contained"}
                         onClick={() => {
                             router.push("/challenge")
@@ -64,9 +78,15 @@ export default function Home() {
                             Play the Game
                         </Typography>
                     </Button>
-                    <Link href={"/gallery"}>
-                        <Button size={"large"} variant={"contained"} color={"secondary"} sx={{
+                        <Button size={"large"} variant={"contained"} color={"secondary"}
+                        component={"a"}
+                                href={"/gallery"}
+                                sx={{
                             py: 1,
+                            width: {
+                                xs: "100%",
+                                sm: "auto",
+                            },
                         }}>
                             <Typography variant={"h3"} component={"p"} sx={{
                                 display: "flex",
@@ -76,9 +96,7 @@ export default function Home() {
                                 <CollectionsOutlinedIcon fontSize={"inherit"}/>
                                 Gallery
                             </Typography>
-
                         </Button>
-                    </Link>
                 </Stack>
             </Stack>
             {data && <LeaderBoard data={data}/>}

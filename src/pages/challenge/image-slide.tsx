@@ -31,7 +31,12 @@ export const ImageSlide = () => {
                 borderBottomLeftRadius: "12px",
                 borderBottomRightRadius: "12px",
             }}>
-                <Typography variant={"h6"} component={"p"} pb={1} fontWeight={600}>The game is simple.</Typography>
+                <Typography variant={"h6"} component={"p"} pb={1} fontWeight={600} sx={{
+                    display: {
+                        xs: "none",
+                        sm: "block",
+                    },
+                }}>The game is simple.</Typography>
                 <ol style={{
                     paddingInlineStart: "20px",
                     marginBlockStart: "0",
@@ -57,7 +62,7 @@ export const ImageSlide = () => {
                     alt={"image"}
                     width={10 * (step) || 1}
                     height={10 * step || 1}
-                    quality={step * 10}
+                    quality={step * 5}
                     style={{
                         width: "100%",
                         height: "100%",
