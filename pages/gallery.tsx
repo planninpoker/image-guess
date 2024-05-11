@@ -2,7 +2,7 @@ import axios from "axios";
 import {useQuery} from "@tanstack/react-query";
 import {ChallengeWithRounds} from "gmaker/app/challenge/api/gallery/route";
 import {useState} from "react";
-import {Box, Card, Slider, Stack, Typography} from "@mui/material";
+import {Box, Card, Skeleton, Slider, Stack, Typography} from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,7 +18,7 @@ const useChallenge = () => {
 }
 
 type ImageComponentProps = {
-    imageId: string;
+    imageId?: string;
     name: string;
 }
 const ImageComponent = ({imageId, name}:ImageComponentProps) => {
@@ -49,19 +49,24 @@ const ImageComponent = ({imageId, name}:ImageComponentProps) => {
                        overflow: "hidden",
                        backgroundColor: "rgba(0, 0, 0, 0.8)",
                    }}>
-                   <Image
-                       src={`/challenge/api/image?imageId=${imageId}`}
-                       alt={`blurry image of a ${name}`}
-                       width={10 * (sliderValue) || 1}
-                       height={10 * sliderValue || 1}
-                       quality={sliderValue * 5}
-                       style={{
-                           width: "100%",
-                           height: "100%",
-                           aspectRatio: "1/1",
-                           objectFit: "contain",
-                       }}
-                   />
+                   {imageId && (
+                       <Image
+                           src={`/challenge/api/image?imageId=${imageId}`}
+                           alt={`blurry image of a ${name}`}
+                           width={10 * (sliderValue) || 1}
+                           height={10 * sliderValue || 1}
+                           quality={sliderValue * 5}
+                           style={{
+                               width: "100%",
+                               height: "100%",
+                               aspectRatio: "1/1",
+                               objectFit: "contain",
+                           }}
+                       />
+                   )}
+                   {!imageId && (
+                       <Skeleton variant={"rectangular"} width={"100%"} height={"100%"}/>
+                   )}
                    {isHovering && <Box sx={{
                        position: "absolute",
                        bottom: 0,
@@ -96,7 +101,9 @@ const ImageComponent = ({imageId, name}:ImageComponentProps) => {
 }
 
 const Gallery = () => {
-    const {data} = useChallenge();
+    const {data, isLoading} = useChallenge();
+
+    const playHolders = new Array(10).fill(null);
 
     return (
         <Stack>
@@ -130,6 +137,12 @@ const Gallery = () => {
                     </Typography>
                 </Stack>
                 <Stack direction={"row"} flexWrap={"wrap"} gap={2}>
+                    {isLoading && playHolders.map((_, index) => (
+                        <ImageComponent
+                            key={index}
+                            name={"Loading..."}
+                        />
+                    ))}
                     {data?.rounds.map((round, index) => (
                         <ImageComponent
                             key={round.id}
