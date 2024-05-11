@@ -14,7 +14,7 @@ const challengeWithScores = Prisma.validator<Prisma.ChallengeDefaultArgs>()({
 
 export type ChallengeWithScores = Prisma.ChallengeGetPayload<typeof challengeWithScores>;
 
-export const GET = async (request: Request) => {
+export const GET = async (request: NextRequest) => {
     try {
         const startOfDay = new Date(new Date().setHours(0, 0, 0, 0));
         const challenge = await prisma.challenge.findFirst({
