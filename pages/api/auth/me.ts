@@ -9,9 +9,19 @@ const handler = async (
     req: NextApiRequest,
     res: NextApiResponse<User>,
 ) => {
-    // no cache
     res.setHeader("Cache-Control", "no-store")
-    if (!req.session.user) {
+
+    if (req.session.user) {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: req.session.user.id
+            }
+        })
+        if (user) {
+            res.status(200).json(user)
+            return
+        }
+    } else {
         req.session.user = await prisma.user.create({
             data: {
                 id: getUUID(),
@@ -20,6 +30,7 @@ const handler = async (
         })
         await req.session.save()
     }
+
     res.status(200).json(req.session.user)
 }
 
