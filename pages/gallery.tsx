@@ -28,7 +28,10 @@ const ImageComponent = ({imageId, name}:ImageComponentProps) => {
     return (
        <Card sx={{
            p:2,
-           width: "calc(50% - 8px)",
+           width: {
+                xs: "100%",
+               sm: "calc(50% - 8px)",
+           }
        }}>
            <Stack sx={{
            }}>

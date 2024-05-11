@@ -58,7 +58,7 @@ export const ImageSlide = () => {
                 overflow: "hidden",
             }}>
                 <Image
-                    src={`/challenge/api/image?imageId=4a60fb22-8ff8-401b-8a98-0ce8281b0ce1.webp`}
+                    src={`/challenge/api/image?imageId=${process.env.NODE_ENV === "production" ? "e1213e67-9ebd-4d36-8d5f-5abaaa9b2e4b.web" : "4a60fb22-8ff8-401b-8a98-0ce8281b0ce1.webp"}`}
                     alt={"image"}
                     width={10 * (step) || 1}
                     height={10 * step || 1}
