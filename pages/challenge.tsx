@@ -148,12 +148,16 @@ const Challenge = () => {
     return <Stack
         key={currentRound.id + attempt}
         spacing={4}
+        sx={{
+            maxWidth: "600px",
+            mx: "auto",
+        }}
         py={{
             xs: 2,
             sm: 4,
         }}>
         <Stack>
-            <Typography variant={"h1"}>
+            <Typography variant={"h2"} component={'h1'}>
                 {data.name}
             </Typography>
             <Typography variant={"body1"}>
@@ -161,6 +165,45 @@ const Challenge = () => {
             </Typography>
         </Stack>
         <Stack spacing={1}>
+            <Box sx={{
+                position: "relative",
+                maxWidth: "1000px",
+                width: "100%",
+                maxHeight: "1000px",
+                height: "100%",
+                aspectRatio: "1/1",
+                borderRadius: "12px",
+                overflow: "hidden",
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+            }}>
+                <Image
+                    src={process.env.NODE_ENV === "production" ? `https://image-guess.netlify.app/challenge/api/image?imageId=${currentRound.imageId}` : `/challenge/api/image?imageId=${currentRound.imageId}`}
+                    loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
+                    alt={"image to be guessed"}
+                    width={10 * (attempt) || 1}
+                    height={10 * attempt || 1}
+                    quality={attempt * 10}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        aspectRatio: "1/1",
+                        objectFit: "contain",
+                    }}
+                />
+                <Box sx={{
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    p: 2,
+                    background: "rgba(0, 0, 0, 0.6)",
+                    borderTopLeftRadius: "12px",
+                    borderBottomRightRadius: "12px",
+                }}>
+                    <Typography>
+                        {attempt} / 10
+                    </Typography>
+                </Box>
+            </Box>
             <form
                 key={currentRound.id}
                 style={{width: "100%"}}
@@ -188,31 +231,6 @@ const Challenge = () => {
                     setValue(e.target.value)
                 }}/>
             </form>
-            <Box sx={{
-                maxWidth: "1000px",
-                width: "100%",
-                maxHeight: "1000px",
-                height: "100%",
-                aspectRatio: "1/1",
-                borderRadius: "12px",
-                overflow: "hidden",
-                backgroundColor: "rgba(0, 0, 0, 0.8)",
-            }}>
-                <Image
-                    src={process.env.NODE_ENV === "production" ? `https://image-guess.netlify.app/challenge/api/image?imageId=${currentRound.imageId}` : `/challenge/api/image?imageId=${currentRound.imageId}`}
-                    loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
-                    alt={"image to be guessed"}
-                    width={10 * (attempt) || 1}
-                    height={10 * attempt || 1}
-                    quality={attempt * 10}
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        aspectRatio: "1/1",
-                        objectFit: "contain",
-                    }}
-                />
-            </Box>
             <Link href={"/"} style={{
                 textDecoration: "none",
             }}>

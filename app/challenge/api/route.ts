@@ -118,7 +118,7 @@ export const POST = async (request: Request) => {
                 name: body.submission.toLowerCase(),
             },
         })
-        const submission = await prisma.challengeRoundSubmission.update({
+        let submission = await prisma.challengeRoundSubmission.update({
             where: {
                 userId_challengeRoundId: {
                     userId: session.user.id,
@@ -135,8 +135,22 @@ export const POST = async (request: Request) => {
                 })
             },
         })
+        if (submission.attempts >= 10 && !submission.completed) {
+            submission = await prisma.challengeRoundSubmission.update({
+                where: {
+                    userId_challengeRoundId: {
+                        userId: session.user.id,
+                        challengeRoundId: body.roundId,
+                    }
+                },
+                data: {
+                    completed: true,
+                    finishedAt: new Date(),
+                },
+            })
+        }
         // If guessed correctly, we need to create a new submission for the next round
-        if (round) {
+        if (submission.completed) {
             const rounds = await prisma.challengeRound.findMany({
                 where: {
                     challengeId: body.challengeId,
@@ -187,7 +201,7 @@ export const POST = async (request: Request) => {
                 return NextResponse.json({correct: true, score, completed: true} as ChallengeRoundSubmissionResponse);
             }
         }
-        return NextResponse.json({correct: !!round} as ChallengeRoundSubmissionResponse);
+        return NextResponse.json({correct: submission.completed} as ChallengeRoundSubmissionResponse);
     } catch (e) {
         console.log("Error occurred ", e);
         return NextResponse.json({Message: "Failed", status: 500});
