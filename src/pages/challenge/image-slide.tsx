@@ -20,7 +20,6 @@ export const ImageSlide = () => {
     return (
         <Box sx={{
             position: "relative",
-
         }}>
             <Stack sx={{
                 p: 2,
@@ -54,7 +53,7 @@ export const ImageSlide = () => {
                 overflow: "hidden",
             }}>
                 <Image
-                    src={`/challenge/api/image?imageId=${process.env.NODE_ENV === "production" ? "2697fb30-6acd-4f37-ba18-67b18bda6f85.webp" : "4a60fb22-8ff8-401b-8a98-0ce8281b0ce1.webp"}`}
+                    src={`/challenge/api/image?imageId=4a60fb22-8ff8-401b-8a98-0ce8281b0ce1.webp`}
                     alt={"image"}
                     width={10 * (step) || 1}
                     height={10 * step || 1}
