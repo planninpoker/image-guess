@@ -41,7 +41,6 @@ export default function Home() {
                     }}>
                         Guess the Images
                     </Typography>
-
                 </Stack>
                 <ImageSlide/>
                 <Stack
