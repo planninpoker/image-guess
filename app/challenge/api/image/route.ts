@@ -6,6 +6,7 @@ const store = () => {
 }
 
 export const GET = async (request: NextRequest) => {
+    console.log("GET request for image")
     try {
         const params = request.nextUrl.searchParams;
         const imageId = params.get("imageId");
@@ -29,6 +30,9 @@ export const GET = async (request: NextRequest) => {
             status: 200,
             statusText: "OK",
             headers: {
+                'Cache-Control': 'no-store, max-age=0',
+                'Pragma': 'no-cache',
+                'Expires': '0',
                 'Content-Type': 'image/webp',
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
