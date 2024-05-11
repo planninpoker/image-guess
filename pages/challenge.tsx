@@ -200,7 +200,7 @@ const Challenge = () => {
                     backgroundColor: "rgba(0, 0, 0, 0.8)",
                 }}>
                 <Image
-                    src={`/challenge/api/image?imageId=${currentRound.imageId}`}
+                    src={`/challenge/api/image/${currentRound.imageId}`}
                     loading={"eager"}
                     alt={"image to be guessed"}
                     width={10 * (attempt) || 1}

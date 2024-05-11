@@ -51,7 +51,7 @@ const ImageComponent = ({imageId, name}:ImageComponentProps) => {
                    }}>
                    {imageId && (
                        <Image
-                           src={`/challenge/api/image?imageId=${imageId}`}
+                           src={`/challenge/api/image/${imageId}`}
                            alt={`blurry image of a ${name}`}
                            width={10 * (sliderValue) || 1}
                            height={10 * sliderValue || 1}

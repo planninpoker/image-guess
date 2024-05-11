@@ -1,16 +1,16 @@
 import {NextRequest, NextResponse} from "next/server";
 import {getStore} from "@netlify/blobs";
-export const GET = async (request: NextRequest) => {
-    const params = request.nextUrl.searchParams;
-    const imageId = params.get("imageId");
+
+export const GET = async (request: Request, {params}: { params: { id: string } }) => {
+    const id = params.id;
 
     try {
-        if (!imageId) {
+        if (!id) {
             return NextResponse.json({Message: "Image ID not found", status: 400});
         }
 
         const blobStore = getStore({name: 'images', consistency: 'strong'});
-        const image = await blobStore.get(imageId, {consistency: "strong", type: "blob"});
+        const image = await blobStore.get(id, {consistency: "strong", type: "blob"});
 
         if (!image) {
             return NextResponse.json({Message: "Image not found", status: 404});
@@ -21,6 +21,7 @@ export const GET = async (request: NextRequest) => {
             statusText: "OK",
             headers: {
                 'Content-Type': 'image/webp',
+                "Cache-Control": "public, max-age=604800, must-revalidate",
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
