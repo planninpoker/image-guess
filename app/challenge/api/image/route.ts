@@ -6,12 +6,10 @@ const store = () => {
 }
 
 export const GET = async (request: NextRequest) => {
-    console.log("GET request for image")
-    try {
-        const params = request.nextUrl.searchParams;
-        const imageId = params.get("imageId");
+    const params = request.nextUrl.searchParams;
+    const imageId = params.get("imageId");
 
-        console.log("imageId ", imageId)
+    try {
         if (!imageId) {
             console.log("Image ID not found")
             return NextResponse.json({Message: "Image ID not found", status: 400});
