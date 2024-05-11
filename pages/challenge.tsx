@@ -188,23 +188,31 @@ const Challenge = () => {
                     setValue(e.target.value)
                 }}/>
             </form>
-            <Image
-                src={process.env.NODE_ENV === "production" ? `https://image-guess.netlify.app/challenge/api/image?imageId=${currentRound.imageId}` : `/challenge/api/image?imageId=${currentRound.imageId}`}
-                loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
-                alt={"image to be guessed"}
-                width={10 * (attempt) || 1}
-                height={10 * attempt || 1}
-                quality={attempt * 10}
-                style={{
-                    maxWidth: "1000px",
-                    width: "100%",
-                    maxHeight: "1000px",
-                    height: "100%",
-                    aspectRatio: "1/1",
-                    objectFit: "contain",
-                    borderRadius: "12px",
-                }}
-            />
+            <Box sx={{
+                maxWidth: "1000px",
+                width: "100%",
+                maxHeight: "1000px",
+                height: "100%",
+                aspectRatio: "1/1",
+                borderRadius: "12px",
+                overflow: "hidden",
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+            }}>
+                <Image
+                    src={process.env.NODE_ENV === "production" ? `https://image-guess.netlify.app/challenge/api/image?imageId=${currentRound.imageId}` : `/challenge/api/image?imageId=${currentRound.imageId}`}
+                    loader={process.env.NODE_ENV === "production" ? customLoader : undefined}
+                    alt={"image to be guessed"}
+                    width={10 * (attempt) || 1}
+                    height={10 * attempt || 1}
+                    quality={attempt * 10}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        aspectRatio: "1/1",
+                        objectFit: "contain",
+                    }}
+                />
+            </Box>
             <Link href={"/"} style={{
                 textDecoration: "none",
             }}>

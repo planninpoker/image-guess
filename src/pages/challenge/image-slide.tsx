@@ -50,6 +50,8 @@ export const ImageSlide = () => {
                 height: "100%",
                 aspectRatio: "1/1",
                 borderRadius: "12px",
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                overflow: "hidden",
             }}>
                 <Image
                     src={`/challenge/api/image?imageId=${process.env.NODE_ENV === "production" ? "2697fb30-6acd-4f37-ba18-67b18bda6f85.webp" : "4a60fb22-8ff8-401b-8a98-0ce8281b0ce1.webp"}`}
@@ -58,13 +60,10 @@ export const ImageSlide = () => {
                     height={10 * step || 1}
                     quality={step * 10}
                     style={{
-                        maxWidth: "1000px",
                         width: "100%",
-                        maxHeight: "1000px",
                         height: "100%",
                         aspectRatio: "1/1",
                         objectFit: "contain",
-                        borderRadius: "12px",
                     }}
                 />
             </Box>

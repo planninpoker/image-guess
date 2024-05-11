@@ -115,10 +115,10 @@ export const POST = async (request: Request) => {
         const round = await prisma.challengeRound.findFirst({
             where: {
                 id: body.roundId,
-                name: body.submission,
+                name: body.submission.toLowerCase(),
             },
         })
-        await prisma.challengeRoundSubmission.update({
+        const submission = await prisma.challengeRoundSubmission.update({
             where: {
                 userId_challengeRoundId: {
                     userId: session.user.id,
