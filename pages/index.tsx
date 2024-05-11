@@ -11,6 +11,7 @@ import {ImageSlide} from "gmaker/src/pages/challenge/image-slide";
 const useChallenge = () => {
     return useQuery({
         queryKey: ["challenge", "scores"],
+        refetchOnMount: true,
         queryFn: async (): Promise<ChallengeWithScores> => {
             const resp = await axios.get<ChallengeWithScores>("/challenge/api/leaderboard");
             return resp.data;
