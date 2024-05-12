@@ -10,10 +10,10 @@ const challengeWithRounds = Prisma.validator<Prisma.ChallengeDefaultArgs>()({
 
 export type ChallengeWithRounds = Prisma.ChallengeGetPayload<typeof challengeWithRounds>;
 
-export const GET = async (request: Request) => {
+export const POST = async (request: Request) => {
     try {
         const startOfDay = new Date(new Date().setHours(0, 0, 0, 0));
-        const challenge = await prisma.challenge.findFirst({
+        const challenge = await prisma.challenge.findMany({
             where: {
                 date: {
                     lt: startOfDay
@@ -21,6 +21,9 @@ export const GET = async (request: Request) => {
             },
             include: {
                 rounds: true,
+            },
+            orderBy: {
+                date: "desc"
             },
             take: 10,
         })

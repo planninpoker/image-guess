@@ -10,8 +10,8 @@ const useChallenge = () => {
     return useQuery({
         queryKey: ["challenge", "gallery"],
         refetchOnMount: true,
-        queryFn: async (): Promise<ChallengeWithRounds> => {
-            const resp = await axios.get<ChallengeWithRounds>("/challenge/api/gallery");
+        queryFn: async (): Promise<ChallengeWithRounds[]> => {
+            const resp = await axios.post<ChallengeWithRounds[]>("/challenge/api/gallery");
             return resp.data;
         }
     });
@@ -105,6 +105,8 @@ const Gallery = () => {
 
     const playHolders = new Array(10).fill(null);
 
+    const rounds = data?.map(r => r.rounds).flat() || [];
+
     return (
         <Stack>
             <Link href={"/"} style={{
@@ -143,7 +145,7 @@ const Gallery = () => {
                             name={"Loading..."}
                         />
                     ))}
-                    {data?.rounds.map((round, index) => (
+                    {rounds.map((round, index) => (
                         <ImageComponent
                             key={round.id}
                             imageId={round.imageId}
